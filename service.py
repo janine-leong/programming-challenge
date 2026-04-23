@@ -25,7 +25,6 @@ def in_zone(clinician_status):
   x,y = clinician_status['features'][0]['geometry']['coordinates']
   point = Point(x,y)
   # print(f"point {point}")
-
   for feature in clinician_status['features']:
     if feature["geometry"]["type"]=="Polygon": 
       polygon = shape(feature['geometry'])
@@ -39,17 +38,14 @@ def in_zone(clinician_status):
 def send_email(sender_email, recipient_email, body):
   print(f"sender address: {sender_email}\nreceiving address: {recipient_email}\nbody: {body}")
   textfile = "email.txt"
-    
   with open(textfile, "w") as f:
     f.write(body)
   with open(textfile) as fp:
     msg = EmailMessage()
     msg.set_content(fp.read())
-
   msg['Subject'] = f'alert'
   msg['From'] = sender_email
   msg['To'] = recipient_email
-
   with smtplib.SMTP('smtp.gmail.com', 587) as s:
     s.starttls()
     s.login(sender_email, password)
