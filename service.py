@@ -31,6 +31,9 @@ def in_zone(clinician_status):
       x,y = feature['geometry']['coordinates']
       point = Point(x,y)
       break
+  if not point:
+    print("false point")
+    return False
   for feature in clinician_status['features']:
     if feature["geometry"]["type"]=="Polygon": 
       polygon = shape(feature['geometry'])
@@ -60,16 +63,20 @@ def send_email(sender_email, recipient_email, body):
 
 
 def main():
-  clinicianIDs = [1,2,3,4,5,6]
+  clinicianIDs = [1,2,3,4,5,6,7]
+  # clinicianIDs = [7]
   for j in range(30):
     for i in range(len(clinicianIDs)):
       print(f"clinician {clinicianIDs[i]} status:")
       clinician_status = get_clinician_status(clinicianIDs[i])
       if clinician_status and clinician_status.get('features'):
-        print(json.dumps(clinician_status, indent=2))
         print(f"in zone? {in_zone(clinician_status)}")
+        # print(json.dumps(clinician_status, indent=2))
+        print(json.dumps(clinician_status))
         if not in_zone(clinician_status):
           send_email(sender_email, recipient_email, f"Clinician {clinicianIDs[i]} is missing")
+      else:
+        print("skipped")
     time.sleep(60)
 
 if __name__ == "__main__":
