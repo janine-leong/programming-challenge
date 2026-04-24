@@ -46,7 +46,7 @@ def send_email(sender_email, recipient_email, body):
     with open(textfile) as fp:
       msg = EmailMessage()
       msg.set_content(fp.read())
-    msg['Subject'] = f'alert'
+    msg['Subject'] = "Alert - missing clinician"
     msg['From'] = sender_email
     msg['To'] = recipient_email
     with smtplib.SMTP('smtp.gmail.com', 587) as s:
@@ -58,7 +58,7 @@ def send_email(sender_email, recipient_email, body):
 
 
 def main():
-  clinicianIDs = [1,2,3,4,5,6]
+  clinicianIDs = [1,2,3,4,5,6,7]
   while True:
     for i in range(len(clinicianIDs)):
       print(f"clinician {clinicianIDs[i]} status:")
@@ -66,7 +66,7 @@ def main():
       if clinician_status:
         print(f"in zone? {in_zone(clinician_status)}")
         if not in_zone(clinician_status):
-          send_email(sender_email, recipient_email, f"missing clinician: {clinicianIDs[i]}")
+          send_email(sender_email, recipient_email, f"Clinician {clinicianIDs[i]} is missing")
         print(json.dumps(clinician_status, indent=2))
     time.sleep(10)
   # send_email(sender_email, recipient_email, "test email")

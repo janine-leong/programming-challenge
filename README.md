@@ -1,3 +1,6 @@
 ## programming-challenge
-  pip install -r requirements.txt
-  python service.py
+# setup
+  pip install -r requirements.txt  
+# run
+  python service.py  
+  
