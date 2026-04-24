@@ -6,7 +6,8 @@ import smtplib
 from email.message import EmailMessage
 
 api_url = "https://3qbqr98twd.execute-api.us-west-2.amazonaws.com/test"
-recipient_email = "coding-challenges+alerts@sprinterhealth.com"
+recipient_email = "sprinter-eng-test@guerrillamail.info"
+# recipient_email = "coding-challenges+alerts@sprinterhealth.com"
 sender_email = "testemailforjl@gmail.com"
 password = "nclpoyahimpfabsd"
 
@@ -24,8 +25,12 @@ def get_clinician_status(clinicianID):
 
 # check if clinician is in safe zone
 def in_zone(clinician_status):
-  x,y = clinician_status['features'][0]['geometry']['coordinates']
-  point = Point(x,y)
+  point = None
+  for feature in clinician_status['features']:
+    if feature["geometry"]["type"]=="Point": 
+      x,y = feature['geometry']['coordinates']
+      point = Point(x,y)
+      break
   for feature in clinician_status['features']:
     if feature["geometry"]["type"]=="Polygon": 
       polygon = shape(feature['geometry'])
@@ -61,11 +66,11 @@ def main():
       print(f"clinician {clinicianIDs[i]} status:")
       clinician_status = get_clinician_status(clinicianIDs[i])
       if clinician_status and clinician_status.get('features'):
+        print(json.dumps(clinician_status, indent=2))
         print(f"in zone? {in_zone(clinician_status)}")
         if not in_zone(clinician_status):
           send_email(sender_email, recipient_email, f"Clinician {clinicianIDs[i]} is missing")
-        print(json.dumps(clinician_status, indent=2))
-    time.sleep(120)
+    time.sleep(60)
 
 if __name__ == "__main__":
   main()
