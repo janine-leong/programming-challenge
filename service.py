@@ -60,7 +60,7 @@ def main():
     for i in range(len(clinicianIDs)):
       print(f"clinician {clinicianIDs[i]} status:")
       clinician_status = get_clinician_status(clinicianIDs[i])
-      if clinician_status:
+      if clinician_status and clinician_status.get('features'):
         print(f"in zone? {in_zone(clinician_status)}")
         if not in_zone(clinician_status):
           send_email(sender_email, recipient_email, f"Clinician {clinicianIDs[i]} is missing")
