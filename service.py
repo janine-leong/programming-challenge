@@ -26,11 +26,9 @@ def get_clinician_status(clinicianID):
 def in_zone(clinician_status):
   x,y = clinician_status['features'][0]['geometry']['coordinates']
   point = Point(x,y)
-  # print(f"point {point}")
   for feature in clinician_status['features']:
     if feature["geometry"]["type"]=="Polygon": 
       polygon = shape(feature['geometry'])
-      # print(polygon)
       if polygon.intersects(point):
         return True
   return False
@@ -38,7 +36,6 @@ def in_zone(clinician_status):
 
 # send email to email_address with missing phlebotomist’s ID
 def send_email(sender_email, recipient_email, body):
-  print(f"sender address: {sender_email}\nreceiving address: {recipient_email}\nbody: {body}")
   try:
     textfile = "email.txt"
     with open(textfile, "w") as f:
@@ -58,8 +55,9 @@ def send_email(sender_email, recipient_email, body):
 
 
 def main():
-  clinicianIDs = [1,2,3,4,5,6,7]
-  while True:
+  clinicianIDs = [1,2,3,4,5,6]
+  # while True:
+  for j in range(30):
     for i in range(len(clinicianIDs)):
       print(f"clinician {clinicianIDs[i]} status:")
       clinician_status = get_clinician_status(clinicianIDs[i])
@@ -68,8 +66,7 @@ def main():
         if not in_zone(clinician_status):
           send_email(sender_email, recipient_email, f"Clinician {clinicianIDs[i]} is missing")
         print(json.dumps(clinician_status, indent=2))
-    time.sleep(10)
-  # send_email(sender_email, recipient_email, "test email")
+    time.sleep(120)
 
 if __name__ == "__main__":
   main()
