@@ -6,7 +6,7 @@ import smtplib
 from email.message import EmailMessage
 
 api_url = "https://3qbqr98twd.execute-api.us-west-2.amazonaws.com/test"
-recipient_email = "sprinter-eng-test@guerrillamail.info"
+recipient_email = "coding-challenges+alerts@sprinterhealth.com"
 sender_email = "testemailforjl@gmail.com"
 password = "nclpoyahimpfabsd"
 
@@ -56,7 +56,6 @@ def send_email(sender_email, recipient_email, body):
 
 def main():
   clinicianIDs = [1,2,3,4,5,6]
-  # while True:
   for j in range(30):
     for i in range(len(clinicianIDs)):
       print(f"clinician {clinicianIDs[i]} status:")
