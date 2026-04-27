@@ -6,8 +6,8 @@ import smtplib
 from email.message import EmailMessage
 
 api_url = "https://3qbqr98twd.execute-api.us-west-2.amazonaws.com/test"
-recipient_email = "sprinter-eng-test@guerrillamail.info"
-# recipient_email = "coding-challenges+alerts@sprinterhealth.com"
+# recipient_email = "sprinter-eng-test@guerrillamail.info"
+recipient_email = "coding-challenges+alerts@sprinterhealth.com"
 sender_email = "testemailforjl@gmail.com"
 password = "nclpoyahimpfabsd"
 
@@ -63,21 +63,20 @@ def send_email(sender_email, recipient_email, body):
 
 
 def main():
-  clinicianIDs = [1,2,3,4,5,6,7]
-  # clinicianIDs = [7]
+  clinicianIDs = [1,2,3,4,5,6]
   for j in range(30):
     for i in range(len(clinicianIDs)):
-      print(f"clinician {clinicianIDs[i]} status:")
+      # print(f"clinician {clinicianIDs[i]} status:")
       clinician_status = get_clinician_status(clinicianIDs[i])
       if clinician_status and clinician_status.get('features'):
-        print(f"in zone? {in_zone(clinician_status)}")
+        # print(f"in zone? {in_zone(clinician_status)}")
         # print(json.dumps(clinician_status, indent=2))
-        print(json.dumps(clinician_status))
+        # print(json.dumps(clinician_status))
         if not in_zone(clinician_status):
           send_email(sender_email, recipient_email, f"Clinician {clinicianIDs[i]} is missing")
       else:
         print("skipped")
-    time.sleep(60)
+    time.sleep(120)
 
 if __name__ == "__main__":
   main()
